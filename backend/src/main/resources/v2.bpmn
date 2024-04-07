@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="f22cba6" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.4.0" camunda:diagramRelationId="dd3bb858-30cd-4f85-8d20-0b75762fbdf6">
+  <bpmn:process id="Process_5dbz9ge" name="Camunda Animal" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="UserTaskForm_2c0o9ff">{
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.4.0",
+  "exporter": {
+    "name": "Camunda Web Modeler",
+    "version": "f22cba6"
+  },
+  "schemaVersion": 16,
+  "id": "Form_0xau714",
+  "components": [
+    {
+      "text": "##### Select Animal to View",
+      "type": "text",
+      "id": "Subheading_0",
+      "layout": {
+        "row": "row_0",
+        "columns": null
+      }
+    },
+    {
+      "values": [
+        {
+          "label": "Dog",
+          "value": "dog"
+        },
+        {
+          "label": "Cat",
+          "value": "cat"
+        },
+        {
+          "label": "Bear",
+          "value": "bear"
+        }
+      ],
+      "label": "Options",
+      "type": "radio",
+      "layout": {
+        "row": "Row_0k6j2sa",
+        "columns": null
+      },
+      "id": "Field_1afrj44",
+      "key": "animalType",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "generated": true,
+  "type": "default"
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1" name="Need Animal Picture">
+      <bpmn:outgoing>Flow_11y9y90</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_11y9y90" sourceRef="StartEvent_1" targetRef="decide-animal" />
+    <bpmn:endEvent id="happy-end" name="Happy">
+      <bpmn:incoming>Flow_1ovfzxc</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:userTask id="decide-animal" name="Choose Animal">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:UserTaskForm_2c0o9ff" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_11y9y90</bpmn:incoming>
+      <bpmn:outgoing>Flow_15c1168</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_0ra0ixs" name="Get animal picture">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="getAnimalPicture" retries="3" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_15c1168</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ovfzxc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_15c1168" sourceRef="decide-animal" targetRef="Activity_0ra0ixs" />
+    <bpmn:sequenceFlow id="Flow_1ovfzxc" sourceRef="Activity_0ra0ixs" targetRef="happy-end" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_5dbz9ge">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="150" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="137" y="143" width="63" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dpj9tv_di" bpmnElement="happy-end">
+        <dc:Bounds x="762" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="764" y="143" width="33" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06qp7v3_di" bpmnElement="decide-animal">
+        <dc:Bounds x="290" y="78" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bcsww9_di" bpmnElement="Activity_0ra0ixs">
+        <dc:Bounds x="520" y="78" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_11y9y90_di" bpmnElement="Flow_11y9y90">
+        <di:waypoint x="186" y="118" />
+        <di:waypoint x="290" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15c1168_di" bpmnElement="Flow_15c1168">
+        <di:waypoint x="390" y="118" />
+        <di:waypoint x="520" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ovfzxc_di" bpmnElement="Flow_1ovfzxc">
+        <di:waypoint x="620" y="118" />
+        <di:waypoint x="762" y="118" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

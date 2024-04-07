@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mongodb://db:27017/springboot-mongo
+    env_file:
+        - .env
+
+  db:
+    image: mongo:latest
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+        - "27017:27017"
+
+volumes:
+  mongodb_data:

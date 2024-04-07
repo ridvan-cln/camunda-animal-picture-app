@@ -1,0 +1,8 @@
+<h1>{{title}}</h1>
+
+<select [(ngModel)]="selectedAnimal">
+  <option value="Bear">Bear</option>
+  <option value="Cat">Cat</option>
+  <option value="Dog">Dog</option>
+</select>
+<button (click)="sendAnimalRequest()">Send</button>

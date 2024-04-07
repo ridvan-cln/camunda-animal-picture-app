@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: camunda-animal-picture-app
+  data:
+    mongodb:
+      host: db
+      port: 27017
+      database: springboot-mongo
+
+# Camunda
+zeebe.client:
+  cloud:
+    region: ${ZEEBE_CLIENT_CLOUD_REGION}
+    clusterId: ${ZEEBE_CLIENT_CLOUD_CLUSTER_ID}
+    clientId: ${ZEEBE_CLIENT_CLOUD_CLIENT_ID}
+    clientSecret: ${ZEEBE_CLIENT_CLOUD_CLIENT_SECRET}
