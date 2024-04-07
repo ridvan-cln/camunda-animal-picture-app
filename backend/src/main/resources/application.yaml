@@ -3,9 +3,7 @@ spring:
     name: camunda-animal-picture-app
   data:
     mongodb:
-      host: db
-      port: 27017
-      database: springboot-mongo
+      uri: ${DATABASE_URL}
 
 # Camunda
 zeebe.client:
@@ -14,3 +12,6 @@ zeebe.client:
     clusterId: ${ZEEBE_CLIENT_CLOUD_CLUSTER_ID}
     clientId: ${ZEEBE_CLIENT_CLOUD_CLIENT_ID}
     clientSecret: ${ZEEBE_CLIENT_CLOUD_CLIENT_SECRET}
+
+cors:
+  allowed-origin: ${FRONTEND_URL}

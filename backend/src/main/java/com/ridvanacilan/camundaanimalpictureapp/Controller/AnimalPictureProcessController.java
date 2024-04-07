@@ -9,12 +9,15 @@ import com.ridvanacilan.camundaanimalpictureapp.Repositories.PictureRepository;
 
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
+
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 import com.ridvanacilan.camundaanimalpictureapp.Model.Picture;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/animal-picture-process")
 public class AnimalPictureProcessController {
