@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { environment } from '../../environments/environments';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
@@ -13,7 +12,6 @@ import { CommonModule } from '@angular/common';
 })
 export class AppComponent {
   title = 'Camunda Animal Picture App';
-  backendUrl = environment.backendUrl;
   processInstanceKey: string = '';
   imageUrl: string = '';
   notFound: boolean = false;
@@ -21,7 +19,7 @@ export class AppComponent {
   constructor(private http: HttpClient) {}
 
   startProcess() {
-    this.http.post(this.backendUrl + "/animal-picture-process", {}, {responseType: 'text'}).subscribe(
+    this.http.post("/api/animal-picture-process", {}, {responseType: 'text'}).subscribe(
       data => {
         this.processInstanceKey = data;
       },
@@ -32,7 +30,7 @@ export class AppComponent {
   }
 
   getPicture() {
-    this.http.get(this.backendUrl + "/animal-picture-process/" + this.processInstanceKey, {responseType: 'blob'}).subscribe(
+    this.http.get("/api/animal-picture-process/" + this.processInstanceKey, {responseType: 'blob'}).subscribe(
       data => {
         let reader = new FileReader();
         reader.addEventListener("load", () => {

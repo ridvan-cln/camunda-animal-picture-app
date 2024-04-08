@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.Optional;
 import com.ridvanacilan.camundaanimalpictureapp.Model.Picture;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin
 @RestController
 @RequestMapping("/animal-picture-process")
 public class AnimalPictureProcessController {
@@ -27,7 +27,7 @@ public class AnimalPictureProcessController {
     @Autowired
     private PictureRepository pictureRepository;
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     public ResponseEntity<Long> startProcess() {
         ProcessInstanceEvent future = client.newCreateInstanceCommand()
                 .bpmnProcessId("Process_5dbz9ge")

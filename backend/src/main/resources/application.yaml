@@ -12,6 +12,3 @@ zeebe.client:
     clusterId: ${ZEEBE_CLIENT_CLOUD_CLUSTER_ID}
     clientId: ${ZEEBE_CLIENT_CLOUD_CLIENT_ID}
     clientSecret: ${ZEEBE_CLIENT_CLOUD_CLIENT_SECRET}
-
-cors:
-  allowed-origin: ${FRONTEND_URL}

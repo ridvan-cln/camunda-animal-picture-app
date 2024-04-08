@@ -23,8 +23,6 @@ services:
     build: frontend
     ports:
       - "4200:4200"
-    environment:
-      - BACKEND_URL=http://app:8080
 
 volumes:
   mongodb_data:

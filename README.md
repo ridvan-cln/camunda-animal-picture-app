@@ -16,7 +16,7 @@ ZEEBE_CLIENT_CLOUD_CLUSTER_ID=your_cluster_id
 ```
 docker compose up -d
 ```
-This starts the Spring Boot client and a MongoDB instance to store the pictures.
+This starts the Spring Boot client (port 8080), the Angular Frontend (port 4200) and a MongoDB instance to store the pictures.
 
 ## Usage
 ### REST API
@@ -24,9 +24,14 @@ Starting a new process (returns processInstanceKey):
 ```
 POST localhost:8080/animal-picture-process
 ```
-After completing the User Task, the Job Worker will have the done the work as well.
+After completing the User Task, the Job Worker will start retrieving the picture from the API and store it in the DB.
 
 To retrieve the picture:
 ```
 GET localhost:8080/animal-picture-process/{processInstanceKey}
 ```
+
+### Frontend
+Navigate to `localhost:4200` to see the Angular Frontend. 
+Here you can start a new process and the text field will get filled with the processInstanceKey automatically.
+After completing the User Task, you can click on the "Get Picture" button to retrieve the picture.

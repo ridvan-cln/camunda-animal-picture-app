@@ -1,11 +1,13 @@
 <h1>{{ title }}</h1>
 
 <button (click)="startProcess()">Start Process</button>
-
+<br>
 <input type="text" [(ngModel)]="processInstanceKey">
 
 <button (click)="getPicture()">Get Picture</button>
 
-<img *ngIf="imageUrl" [src]="imageUrl">
+<br>
 
 <p *ngIf="notFound">The User Task is not completed yet.</p>
+
+<img *ngIf="imageUrl" [src]="imageUrl">
