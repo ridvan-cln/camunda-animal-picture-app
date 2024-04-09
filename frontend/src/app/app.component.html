@@ -1,8 +1,8 @@
 <h1>{{ title }}</h1>
 
-<button (click)="startProcess()">Start Process</button>
+<button (click)="startProcess()">Start new Process</button>
 <br>
-<input type="text" [(ngModel)]="processInstanceKey">
+<input type="text" [(ngModel)]="processInstanceKey" placeholder="Enter process instance key">
 
 <button (click)="getPicture()">Get Picture</button>
 

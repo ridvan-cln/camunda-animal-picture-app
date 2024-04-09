@@ -27,7 +27,7 @@ public class AnimalPictureProcessController {
     @Autowired
     private PictureRepository pictureRepository;
 
-    @PostMapping(produces = "application/json")
+    @PostMapping
     public ResponseEntity<Long> startProcess() {
         ProcessInstanceEvent future = client.newCreateInstanceCommand()
                 .bpmnProcessId("Process_5dbz9ge")

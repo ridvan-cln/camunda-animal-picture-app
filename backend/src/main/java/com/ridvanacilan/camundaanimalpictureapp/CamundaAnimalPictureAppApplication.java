@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import io.camunda.zeebe.spring.client.annotation.Deployment;
 
 @SpringBootApplication
-@Deployment(resources = "classpath:v2.bpmn")
+@Deployment(resources = "classpath:animal-picture.bpmn")
 public class CamundaAnimalPictureAppApplication {
 
 	public static void main(String[] args) {

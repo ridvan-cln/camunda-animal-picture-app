@@ -22,6 +22,8 @@ export class AppComponent {
     this.http.post("/api/animal-picture-process", {}, {responseType: 'text'}).subscribe(
       data => {
         this.processInstanceKey = data;
+        this.imageUrl = '';
+        this.notFound = false;
       },
       error => {
         console.error('Error:', error);
@@ -46,6 +48,7 @@ export class AppComponent {
         console.error('Error:', error);
         if (error.status === 404) {
           this.notFound = true;
+          this.imageUrl = '';
         }
       }
     );
