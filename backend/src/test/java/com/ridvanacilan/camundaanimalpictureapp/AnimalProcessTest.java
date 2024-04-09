@@ -11,50 +11,67 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
 import io.camunda.zeebe.client.ZeebeClient;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.response.ProcessInstanceEvent;
 import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
-import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 
-@SpringBootTest
-@ZeebeSpringTest
-public class AnimalProcessTest {
+public class AnimalProcessTest extends CamundaAnimalPictureAppApplicationTests {
 
-  @MockBean
-  private AnimalPictureJobWorker worker;
+  private static final String SERVICETASK_ID = "Activity_0ra0ixs";
+  private static final String USERTASK_ID = "decide-animal";
+  private static final String PROCESS_ID = "Process_5dbz9ge";
+
   @Autowired
   private ZeebeClient zeebe;
   @Autowired
   private ZeebeTestEngine zeebeTestEngine;
 
   @Test
-  public void getCatPicture() throws InterruptedException, TimeoutException {
-    Map<String, Object> variables = Collections.singletonMap("animalType", "cat");
-
+  public void testProcessIsDeployedAndCanBeStarted() {
     ProcessInstanceEvent processInstance = zeebe.newCreateInstanceCommand()
-        .bpmnProcessId("Process_5dbz9ge")
+        .bpmnProcessId(PROCESS_ID)
         .latestVersion()
         .send()
         .join();
 
-    waitForUserTaskAndComplete(
-        "decide-animal", variables);
-
-    assertThat(processInstance)
-        .hasPassedElement("decide-animal")
-        .isActive();
-
-    // verify that the worker was called
-    // not sure why this is not working
-    // Mockito.verify(worker).getAnimalPicture(Mockito.any(), eq("cat"));
+    assertThat(processInstance).isActive();
   }
 
+  @Test
+  public void testProcessGetCatPicture() throws InterruptedException, TimeoutException {
+    // given
+    Map<String, Object> variables = Collections.singletonMap("animalType", "cat");
+
+    // when
+    ProcessInstanceEvent processInstance = zeebe.newCreateInstanceCommand()
+        .bpmnProcessId(PROCESS_ID)
+        .latestVersion()
+        .send()
+        .join();
+    waitForUserTaskAndComplete(
+        USERTASK_ID, variables);
+
+    // then process is waiting for service task to be completed
+    assertThat(processInstance)
+        .hasPassedElement(USERTASK_ID)
+        .isActive();
+
+    // when
+    completeServiceTask("getAnimalPicture");
+
+    // then
+    assertThat(processInstance)
+        .hasPassedElementsInOrder(USERTASK_ID, SERVICETASK_ID)
+        .hasVariableWithValue("animalType", "cat")
+        .isCompleted();
+  }
+
+  // source:
+  // https://github.com/camunda-community-hub/camunda-8-examples/blob/main/twitter-review-java-springboot/src/test/java/org/camunda/community/examples/twitter/TestTwitterProcess.java
   public void waitForUserTaskAndComplete(String userTaskId, Map<String, Object> variables)
       throws InterruptedException, TimeoutException {
     // Let the workflow engine do whatever it needs to do
@@ -84,5 +101,33 @@ public class AnimalProcessTest {
     } else {
       zeebe.newCompleteCommand(userTaskJob.getKey()).send().join();
     }
+  }
+
+  // source:
+  // https://github.com/camunda/zeebe-process-test/blob/main/examples/src/test/java/io/camunda/zeebe/process/test/examples/PullRequestProcessTest.java
+  private void completeServiceTask(final String jobType)
+      throws InterruptedException, TimeoutException {
+    completeServiceTasks(jobType, 1);
+  }
+  private void completeServiceTasks(final String jobType, final int count)
+      throws InterruptedException, TimeoutException {
+
+    final var activateJobsResponse = zeebe.newActivateJobsCommand().jobType(jobType).maxJobsToActivate(count).send()
+        .join();
+
+    final int activatedJobCount = activateJobsResponse.getJobs().size();
+    if (activatedJobCount < count) {
+      Assertions.fail(
+          "Unable to activate %d jobs, because only %d were activated."
+              .formatted(count, activatedJobCount));
+    }
+
+    for (int i = 0; i < count; i++) {
+      final var job = activateJobsResponse.getJobs().get(i);
+
+      zeebe.newCompleteCommand(job.getKey()).send().join();
+    }
+
+    zeebeTestEngine.waitForIdleState(Duration.ofSeconds(1));
   }
 }

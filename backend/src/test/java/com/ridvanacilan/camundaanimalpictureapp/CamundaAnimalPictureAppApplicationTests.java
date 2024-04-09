@@ -1,15 +1,13 @@
 package com.ridvanacilan.camundaanimalpictureapp;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import io.camunda.zeebe.spring.test.ZeebeSpringTest;
 
 @SpringBootTest
-@AutoConfigureDataMongo
+@TestPropertySource(properties = {"spring.config.name=test"})
 @ZeebeSpringTest
 class CamundaAnimalPictureAppApplicationTests {
 

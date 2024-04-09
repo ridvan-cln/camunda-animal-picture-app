@@ -9,8 +9,6 @@ public class Picture {
     @Id
     private String id;
 
-    private String job;
-
     private Binary image;
 
     public String getId() {
