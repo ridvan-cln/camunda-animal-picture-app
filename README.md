@@ -35,18 +35,6 @@ Before you start the application, you need to set up the environment variables.
 These contain the connection info to your Camunda SaaS Cluster.
 This can be done by replacing the placeholders in the [configmap file](./helm/templates/home-rido-test-camunda-animal-picture-app--env-configmap.yaml) with your values.
 
-#### Building the Docker Images
-If you are using Minikube you need to switch to the Minikube Docker environment:
-```
-eval $(minikube docker-env)
-```
-
-Then you can build the Docker images:
-
-```
-docker compose build
-```
-
 #### Deploying the Application
 
 ```
@@ -55,7 +43,9 @@ helm install camunda-animal-picture-app ./helm
 
 This will deploy the application to your Kubernetes cluster.  
 Again you can access the Spring Boot client (port 8080) and the Angular Frontend (port 4200).
-If you are using Minikube, you can find the IP address with:
+
+You will need to find out the IP addresses of the pods to access the services.  
+E.g. if you are using Minikube, you can find the IP address with:
 
 ```
 minikube ip
@@ -102,7 +92,7 @@ After completing the User Task, you can click on the "Get Picture" button to ret
 ![Frontend](./frontend.png)
 
 # Simplified Architecture
-<!-- add png -->
+
 ![Architecture](./simplified-architecture.png)
 
 # Limitations
@@ -111,8 +101,3 @@ After completing the User Task, you can click on the "Get Picture" button to ret
 
 For now the application can only be configured to work with the Saas offering from Camunda.  
 If you want the app to work with your self-managed instance, you would need to adjust the [application.yaml](./backend/src/main/resources/application.yaml) file accordingly.
-
-## Docker Mac Slow Filesystem
-
-If you are using Docker on a Mac, you might experience slow file system performance, and even timeouts
-when Docker is on the `npm install` step. To mitigate this, you can run `npm install` on your host machine first in the `frontend` directory.

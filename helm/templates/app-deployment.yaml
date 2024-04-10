@@ -50,8 +50,7 @@ spec:
                 configMapKeyRef:
                   key: ZEEBE_CLIENT_CLOUD_REGION
                   name: home-rido-test-camunda-animal-picture-app--env
-          image: camunda-animal-picture-app-app:latest
-          imagePullPolicy: Never
+          image: ridvancln/camunda-animal-picture-app-app:1.0.0
           name: app
           ports:
             - containerPort: 8080

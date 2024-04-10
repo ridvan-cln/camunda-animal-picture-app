@@ -25,8 +25,7 @@ spec:
         io.kompose.service: frontend
     spec:
       containers:
-        - image: camunda-animal-picture-app-frontend:latest
-          imagePullPolicy: Never
+        - image: ridvancln/camunda-animal-picture-app-frontend:1.0.0
           name: frontend
           ports:
             - containerPort: 4200
