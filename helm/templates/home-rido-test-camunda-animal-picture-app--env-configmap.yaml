@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  ZEEBE_CLIENT_CLOUD_CLIENT_ID: <your-client-id>
+  ZEEBE_CLIENT_CLOUD_CLIENT_SECRET: <your-client-secret>
+  ZEEBE_CLIENT_CLOUD_CLUSTER_ID: <your-cluster-id>
+  ZEEBE_CLIENT_CLOUD_REGION: <your-region>
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app-home-rido-test-camunda-animal-picture-app--env
+  name: home-rido-test-camunda-animal-picture-app--env

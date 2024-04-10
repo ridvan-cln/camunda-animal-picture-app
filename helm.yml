@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  app:
+    build: backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=mongodb://db:27017/springboot-mongo
+      - FRONTEND_URL=http://frontend:4200
+    env_file:
+        - .env
+
+  db:
+    image: mongo:7.0.8
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+        - "27017:27017"
+
+  frontend:
+    build: frontend
+    ports:
+      - "4200:4200"
+
+volumes:
+  mongodb_data:

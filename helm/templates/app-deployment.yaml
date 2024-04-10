@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -c -f helm.yml
+    kompose.version: 1.31.2 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -c -f helm.yml
+        kompose.version: 1.31.2 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/camunda-animal-picture-app-default: "true"
+        io.kompose.service: app
+    spec:
+      containers:
+        - env:
+            - name: DATABASE_URL
+              value: mongodb://db:27017/springboot-mongo
+            - name: FRONTEND_URL
+              value: http://frontend:4200
+            - name: ZEEBE_CLIENT_CLOUD_CLIENT_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: ZEEBE_CLIENT_CLOUD_CLIENT_ID
+                  name: home-rido-test-camunda-animal-picture-app--env
+            - name: ZEEBE_CLIENT_CLOUD_CLIENT_SECRET
+              valueFrom:
+                configMapKeyRef:
+                  key: ZEEBE_CLIENT_CLOUD_CLIENT_SECRET
+                  name: home-rido-test-camunda-animal-picture-app--env
+            - name: ZEEBE_CLIENT_CLOUD_CLUSTER_ID
+              valueFrom:
+                configMapKeyRef:
+                  key: ZEEBE_CLIENT_CLOUD_CLUSTER_ID
+                  name: home-rido-test-camunda-animal-picture-app--env
+            - name: ZEEBE_CLIENT_CLOUD_REGION
+              valueFrom:
+                configMapKeyRef:
+                  key: ZEEBE_CLIENT_CLOUD_REGION
+                  name: home-rido-test-camunda-animal-picture-app--env
+          image: camunda-animal-picture-app-app:latest
+          imagePullPolicy: Never
+          name: app
+          ports:
+            - containerPort: 8080
+              hostPort: 8080
+              protocol: TCP
+          resources: {}
+      restartPolicy: Always
+status: {}
