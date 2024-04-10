@@ -21,6 +21,7 @@ import io.camunda.zeebe.process.test.api.ZeebeTestEngine;
 
 public class AnimalProcessTest extends CamundaAnimalPictureAppApplicationTests {
 
+  private static final String STARTEVENT_ID = "StartEvent_1";
   private static final String SERVICETASK_ID = "Activity_0ra0ixs";
   private static final String USERTASK_ID = "decide-animal";
   private static final String PROCESS_ID = "Process_5dbz9ge";
@@ -52,12 +53,21 @@ public class AnimalProcessTest extends CamundaAnimalPictureAppApplicationTests {
         .latestVersion()
         .send()
         .join();
+
+    // then process is waiting for user task to be completed
+    assertThat(processInstance)
+        .hasPassedElement(STARTEVENT_ID)
+        .hasNotPassedElement(USERTASK_ID)
+        .isActive();
+    
+    // when
     waitForUserTaskAndComplete(
         USERTASK_ID, variables);
 
     // then process is waiting for service task to be completed
     assertThat(processInstance)
-        .hasPassedElement(USERTASK_ID)
+        .hasPassedElementsInOrder(STARTEVENT_ID, USERTASK_ID)
+        .hasNotPassedElement(SERVICETASK_ID)
         .isActive();
 
     // when
@@ -65,7 +75,7 @@ public class AnimalProcessTest extends CamundaAnimalPictureAppApplicationTests {
 
     // then
     assertThat(processInstance)
-        .hasPassedElementsInOrder(USERTASK_ID, SERVICETASK_ID)
+        .hasPassedElementsInOrder(STARTEVENT_ID, USERTASK_ID, SERVICETASK_ID)
         .hasVariableWithValue("animalType", "cat")
         .isCompleted();
   }
