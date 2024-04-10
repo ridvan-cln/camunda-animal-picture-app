@@ -52,6 +52,11 @@ GET localhost:8080/animal-picture-process/{processInstanceKey}
 Navigate to `http://localhost:4200` to see the Angular Frontend.  
 Here you can start a new process and the text field will get filled with the processInstanceKey automatically.  
 After completing the User Task, you can click on the "Get Picture" button to retrieve the picture.
+![Frontend](./frontend.png)
+
+# Simplified Architecture
+<!-- add png -->
+![Architecture](./simplified-architecture.png)
 
 # Limitations
 
